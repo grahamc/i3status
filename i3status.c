@@ -246,8 +246,13 @@ static char *get_config_path(void) {
     if (path_exists(config_path))
         return config_path;
     free(config_path);
+    
+    /* 3a: check the traditional path under /etc */
+    config_path = "/etc/i3status.conf";
+    if (path_exists(config_path))
+        return sstrdup(config_path);
 
-    /* 3: check the traditional path under /etc */
+    /* 3b: check the traditional path under /nix/store/<hash>-package/etc */
     config_path = SYSCONFDIR "/i3status.conf";
     if (path_exists(config_path))
         return sstrdup(config_path);
